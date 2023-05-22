@@ -15,7 +15,7 @@ public interface MyHeap<ElementT extends Comparable<ElementT>> extends MyCollect
 
     ElementT peek();
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     boolean isEmpty();
 
@@ -27,5 +27,5 @@ public interface MyHeap<ElementT extends Comparable<ElementT>> extends MyCollect
 
     int size();
 
-    ElementT[] toArray();
+    ElementT[] toArray(ElementT[] array);
 }

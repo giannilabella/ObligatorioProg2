@@ -15,7 +15,7 @@ public interface MyBST<ElementT extends Comparable<ElementT>> extends MyCollecti
 
     boolean containsAll(MyCollection<? extends ElementT> collection);
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     boolean isEmpty();
 
@@ -41,7 +41,7 @@ public interface MyBST<ElementT extends Comparable<ElementT>> extends MyCollecti
 
     int size();
 
-    ElementT sucessor(ElementT element);
+    ElementT successor(ElementT element);
 
-    ElementT[] toArray();
+    ElementT[] toArray(ElementT[] array);
 }

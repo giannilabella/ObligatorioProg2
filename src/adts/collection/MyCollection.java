@@ -11,7 +11,7 @@ public interface MyCollection<ElementT> extends Iterable<ElementT> {
 
     boolean containsAll(MyCollection<? extends ElementT> collection);
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     boolean isEmpty();
 
@@ -21,5 +21,5 @@ public interface MyCollection<ElementT> extends Iterable<ElementT> {
 
     int size();
 
-    ElementT[] toArray();
+    ElementT[] toArray(ElementT[] array);
 }

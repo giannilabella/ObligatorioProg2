@@ -17,7 +17,7 @@ public interface MyList<ElementT> extends MyCollection<ElementT> {
 
     boolean containsAll(MyCollection<? extends ElementT> collection);
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     ElementT get(int index);
 
@@ -39,5 +39,5 @@ public interface MyList<ElementT> extends MyCollection<ElementT> {
 
     MyList<ElementT> subList(int fromIndex, int toIndex);
 
-    ElementT[] toArray();
+    ElementT[] toArray(ElementT[] array);
 }

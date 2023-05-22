@@ -9,7 +9,7 @@ public interface MyHashtable<KeyT, ValueT> {
 
     boolean containsValue(ValueT value);
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     ValueT get(KeyT key);
 

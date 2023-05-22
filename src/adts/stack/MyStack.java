@@ -15,7 +15,7 @@ public interface MyStack<ElementT> extends MyCollection<ElementT> {
 
     ElementT peek();
 
-    boolean equals(Object other);
+    boolean equals(Object obj);
 
     boolean isEmpty();
 
@@ -27,5 +27,5 @@ public interface MyStack<ElementT> extends MyCollection<ElementT> {
 
     int size();
 
-    ElementT[] toArray();
+    ElementT[] toArray(ElementT[] array);
 }
