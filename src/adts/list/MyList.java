@@ -17,7 +17,7 @@ public interface MyList<ElementT> extends MyCollection<ElementT> {
 
     boolean containsAll(MyCollection<? extends ElementT> collection);
 
-    boolean equals(Object obj);
+    boolean equals(Object other);
 
     ElementT get(int index);
 
