@@ -15,7 +15,7 @@ public interface MyStack<ElementT> extends MyCollection<ElementT> {
 
     ElementT peek();
 
-    boolean equals(Object obj);
+    boolean equals(Object other);
 
     boolean isEmpty();
 
