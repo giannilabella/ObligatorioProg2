@@ -1,19 +1,19 @@
 package test.adts;
 
 import adts.list.MyList;
-import adts.list.MyLinkedList;
+import adts.list.MyDoublyLinkedList;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyLinkedListTest {
+class MyDoublyLinkedListTest {
     MyList<String> list;
 
     @BeforeEach
     void setUp() {
-        list = new MyLinkedList<>();
+        list = new MyDoublyLinkedList<>();
     }
 
     @AfterEach
@@ -47,7 +47,7 @@ class MyLinkedListTest {
 
     @Test
     void testAddAll() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),
@@ -61,7 +61,7 @@ class MyLinkedListTest {
 
     @Test
     void testAddAllAtIndex() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("third element")),
                 () -> assertTrue(list.add("fourth element")),
@@ -98,7 +98,7 @@ class MyLinkedListTest {
 
     @Test
     void testContainsAll() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),
@@ -112,7 +112,7 @@ class MyLinkedListTest {
 
     @Test
     void testEquals() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),
@@ -126,7 +126,7 @@ class MyLinkedListTest {
 
     @Test
     void testNotEquals() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),
@@ -228,7 +228,7 @@ class MyLinkedListTest {
 
     @Test
     void testRemoveAll() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),
@@ -280,7 +280,7 @@ class MyLinkedListTest {
 
     @Test
     void testSubList() {
-        MyList<String> otherList = new MyLinkedList<>();
+        MyList<String> otherList = new MyDoublyLinkedList<>();
         assertAll(
                 () -> assertTrue(list.add("first element")),
                 () -> assertTrue(list.add("second element")),

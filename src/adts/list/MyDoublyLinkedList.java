@@ -6,12 +6,12 @@ import java.util.Iterator;
 import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 
-public class MyLinkedList<ElementT> implements MyList<ElementT> {
+public class MyDoublyLinkedList<ElementT> implements MyList<ElementT> {
     private int size;
     private Node firstNode;
     private Node lastNode;
 
-    public MyLinkedList() {
+    public MyDoublyLinkedList() {
         this.size = 0;
         this.firstNode = null;
         this.lastNode = null;
@@ -156,7 +156,7 @@ public class MyLinkedList<ElementT> implements MyList<ElementT> {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
 
-        MyLinkedList<?> that = (MyLinkedList<?>) other;
+        MyDoublyLinkedList<?> that = (MyDoublyLinkedList<?>) other;
         if (this.size != that.size) return false;
 
         for (int i = 0; i < this.size; i++) {
@@ -298,7 +298,7 @@ public class MyLinkedList<ElementT> implements MyList<ElementT> {
         checkElementIndex(fromIndex);
         checkElementIndex(toIndex);
 
-        MyList<ElementT> subList = new MyLinkedList<>();
+        MyList<ElementT> subList = new MyDoublyLinkedList<>();
 
         Node currentNode = nodeAtIndex(fromIndex);
         for (int i = fromIndex; i <= toIndex; i++) {
@@ -337,7 +337,7 @@ public class MyLinkedList<ElementT> implements MyList<ElementT> {
     private class MyIterator implements Iterator<ElementT> {
         private Node nextNode;
 
-        MyIterator(MyLinkedList<ElementT> list) {
+        MyIterator(MyDoublyLinkedList<ElementT> list) {
             nextNode = list.firstNode;
         }
 
