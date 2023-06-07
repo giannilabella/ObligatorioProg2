@@ -21,7 +21,7 @@ public interface MyBST<ElementT extends Comparable<ElementT>> extends MyCollecti
 
     Iterator<ElementT> inorderIterator();
 
-    Iterator<ElementT> preoderIterator();
+    Iterator<ElementT> preorderIterator();
 
     Iterator<ElementT> postorderIterator();
 
