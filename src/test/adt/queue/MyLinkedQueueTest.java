@@ -1,4 +1,4 @@
-package test.adt;
+package test.adt.queue;
 
 import uy.edu.um.prog2.adt.queue.MyQueue;
 import uy.edu.um.prog2.adt.queue.MyLinkedQueue;

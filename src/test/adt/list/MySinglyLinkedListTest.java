@@ -1,4 +1,4 @@
-package test.adt;
+package test.adt.list;
 
 import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 import uy.edu.um.prog2.adt.list.MyList;

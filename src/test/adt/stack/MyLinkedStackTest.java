@@ -1,4 +1,4 @@
-package test.adt;
+package test.adt.stack;
 
 import uy.edu.um.prog2.adt.stack.MyStack;
 import uy.edu.um.prog2.adt.stack.MyLinkedStack;

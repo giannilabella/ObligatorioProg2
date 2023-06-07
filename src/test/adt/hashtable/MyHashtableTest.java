@@ -1,4 +1,4 @@
-package test.adt;
+package test.adt.hashtable;
 
 import uy.edu.um.prog2.adt.hashtable.MyHashtable;
 import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;

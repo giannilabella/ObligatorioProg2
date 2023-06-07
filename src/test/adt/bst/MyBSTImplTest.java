@@ -1,4 +1,4 @@
-package test.adt;
+package test.adt.bst;
 
 import uy.edu.um.prog2.adt.bst.MyBST;
 import uy.edu.um.prog2.adt.bst.MyBSTImpl;
