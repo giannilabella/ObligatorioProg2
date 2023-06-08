@@ -5,7 +5,6 @@ import uy.edu.um.prog2.adt.collection.MyCollection;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<ElementT> {
     private ElementT[] elements;
@@ -201,27 +200,7 @@ public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
 
     @Override
     public Iterator<ElementT> iterator() {
-        return new MyIterator(this);
-    }
-
-    private class MyIterator implements Iterator<ElementT> {
-        private final MyMinHeap<ElementT> heap;
-
-        MyIterator(MyMinHeap<ElementT> heap) {
-            this.heap = heap;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return !heap.isEmpty();
-        }
-
-        @Override
-        public ElementT next() {
-            if (!hasNext()) throw new NoSuchElementException();
-
-            return heap.remove();
-        }
+        return new MyIterator<>(this);
     }
 
     @SuppressWarnings("unchecked")
