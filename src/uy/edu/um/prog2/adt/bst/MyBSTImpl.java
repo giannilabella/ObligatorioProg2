@@ -2,11 +2,11 @@ package uy.edu.um.prog2.adt.bst;
 
 import uy.edu.um.prog2.adt.collection.MyCollection;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<ElementT> {
-    private Node root;
+    private Node<ElementT> root;
     private int size;
 
     public MyBSTImpl() {
@@ -19,23 +19,23 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
         if (element == null) throw new IllegalArgumentException();
 
         if (root == null) {
-            root = new Node(element);
+            root = new Node<>(element);
             size++;
             return true;
         }
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode != null) {
             int compareResult = element.compareTo(currentNode.data);
             if (compareResult < 0) {
                 if (!currentNode.hasLeftChild()) {
-                    currentNode.leftChild = new Node(element, currentNode);
+                    currentNode.leftChild = new Node<>(element, currentNode);
                     size++;
                     return true;
                 }
                 currentNode = currentNode.leftChild;
             } else {
                 if (!currentNode.hasRightChild()) {
-                    currentNode.rightChild = new Node(element, currentNode);
+                    currentNode.rightChild = new Node<>(element, currentNode);
                     size++;
                     return true;
                 }
@@ -70,7 +70,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
             return false;
         }
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode != null) {
             int compareResult = element.compareTo(currentNode.data);
 
@@ -109,24 +109,24 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
 
     @Override
     public Iterator<ElementT> inorderIterator() {
-        return new MyInorderIterator(this);
+        return new MyInorderIterator<>(root);
     }
 
     @Override
     public Iterator<ElementT> preorderIterator() {
-        return new MyPreorderIterator(this);
+        return new MyPreorderIterator<>(root);
     }
 
     @Override
     public Iterator<ElementT> postorderIterator() {
-        return new MyPostorderIterator(this);
+        return new MyPostorderIterator<>(root);
     }
 
     @Override
     public ElementT maximum() {
         if (root == null) return null;
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode.hasRightChild()) {
             currentNode = currentNode.rightChild;
         }
@@ -137,7 +137,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
     public ElementT minimum() {
         if (root == null) return null;
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode.hasLeftChild()) {
             currentNode = currentNode.leftChild;
         }
@@ -151,7 +151,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
         if (root == null) return null;
 
         ElementT predecessor = null;
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode != null) {
             if ((
                     predecessor == null ||
@@ -187,7 +187,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
 
         if (root == null) return false;
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode != null) {
             int compareResult = element.compareTo(currentNode.data);
             if (compareResult < 0) {
@@ -228,7 +228,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
                     size--;
                     return true;
                 } else {
-                    Node successor = currentNode.rightChild;
+                    Node<ElementT> successor = currentNode.rightChild;
                     while (successor.hasLeftChild()) {
                         successor = successor.leftChild;
                     }
@@ -274,7 +274,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
     public ElementT removeMaximum() {
         if (root == null) return null;
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode.hasRightChild()) {
             currentNode = currentNode.rightChild;
         }
@@ -294,7 +294,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
     public ElementT removeMinimum() {
         if (root == null) return null;
 
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode.hasLeftChild()) {
             currentNode = currentNode.leftChild;
         }
@@ -322,7 +322,7 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
         if (root == null) return null;
 
         ElementT successor = null;
-        Node currentNode = root;
+        Node<ElementT> currentNode = root;
         while (currentNode != null) {
             if ((
                     successor == null ||
@@ -354,186 +354,43 @@ public class MyBSTImpl<ElementT extends Comparable<ElementT>> implements MyBST<E
 
     @Override
     public ElementT[] toArray(ElementT[] array) {
-        return null;
+        return toInorderArray(array);
+    }
+
+    @Override
+    public ElementT[] toInorderArray(ElementT[] array) {
+        return iteratorToArray(array, inorderIterator());
+    }
+
+    @Override
+    public ElementT[] toPreorderArray(ElementT[] array) {
+        return iteratorToArray(array, preorderIterator());
+    }
+
+    @Override
+    public ElementT[] toPostorderArray(ElementT[] array) {
+        return iteratorToArray(array, postorderIterator());
+    }
+
+    @SuppressWarnings("unchecked")
+    private ElementT[] iteratorToArray(ElementT[] array, Iterator<ElementT> iterator) {
+        if (array.length < size) {
+            array = (ElementT[]) Array.newInstance(array.getClass().getComponentType(), size);
+        }
+
+        for (int i = 0; i < array.length; i++) {
+            if (iterator.hasNext()) {
+                array[i] = iterator.next();
+            } else {
+                array[i] = null;
+            }
+        }
+
+        return array;
     }
 
     @Override
     public Iterator<ElementT> iterator() {
-        return new MyInorderIterator(this);
-    }
-
-    private class MyInorderIterator implements Iterator<ElementT> {
-        private Node nextNode;
-
-        MyInorderIterator(MyBSTImpl<ElementT> bst) {
-            Node currentNode = bst.root;
-            while (currentNode.hasLeftChild()) {
-                currentNode = currentNode.leftChild;
-            }
-            nextNode = currentNode;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return nextNode != null;
-        }
-
-        @Override
-        public ElementT next() {
-            if (!hasNext()) throw new NoSuchElementException();
-
-            ElementT element = nextNode.data;
-            if (nextNode.hasRightChild()) {
-                Node currentNode = nextNode.rightChild;
-                while (currentNode.hasLeftChild()) {
-                    currentNode = currentNode.leftChild;
-                }
-                nextNode = currentNode;
-            } else {
-                if (nextNode.parent.leftChild == nextNode) {
-                    nextNode.alreadyTraversed = true;
-                    nextNode = nextNode.parent;
-                } else {
-                    while (nextNode != null && (!nextNode.hasLeftChild() || nextNode.leftChild.alreadyTraversed)) {
-                        if (nextNode.hasLeftChild())
-                            nextNode.leftChild.alreadyTraversed = false;
-                        nextNode = nextNode.parent;
-                    }
-                    if (nextNode != null) {
-                        nextNode.leftChild.alreadyTraversed = true;
-                    }
-                }
-            }
-            return element;
-        }
-    }
-
-    private class MyPreorderIterator implements Iterator<ElementT> {
-        private Node nextNode;
-
-        MyPreorderIterator(MyBSTImpl<ElementT> bst) {
-            nextNode = bst.root;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return nextNode != null;
-        }
-
-        @Override
-        public ElementT next() {
-            if (!hasNext()) throw new NoSuchElementException();
-
-            ElementT element = nextNode.data;
-            nextNode.alreadyTraversed = true;
-            if (nextNode.hasLeftChild()) {
-                nextNode = nextNode.leftChild;
-            } else {
-                if (nextNode.parent.leftChild == nextNode) {
-                    while (nextNode != null && !nextNode.hasRightChild()) {
-                        nextNode.alreadyTraversed = false;
-                        nextNode = nextNode.parent;
-                    }
-                    if (nextNode != null) {
-                        nextNode = nextNode.rightChild;
-                    }
-                } else {
-                    while (nextNode != null && nextNode.alreadyTraversed) {
-                        nextNode = nextNode.parent;
-
-                        if (nextNode != null) {
-                            if (nextNode.hasRightChild() && !nextNode.rightChild.alreadyTraversed) {
-                                nextNode = nextNode.rightChild;
-                                break;
-                            } else if (nextNode.hasRightChild()) {
-                                nextNode.rightChild.alreadyTraversed = false;
-                            }
-                        }
-                    }
-                }
-            }
-            return element;
-        }
-    }
-
-    private class MyPostorderIterator implements Iterator<ElementT> {
-        private Node nextNode;
-
-        MyPostorderIterator(MyBSTImpl<ElementT> bst) {
-            Node currentNode = bst.root;
-            while (currentNode.hasRightChild()) {
-                currentNode = currentNode.rightChild;
-            }
-            nextNode = currentNode;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return nextNode != null;
-        }
-
-        @Override
-        public ElementT next() {
-            if (!hasNext()) throw new NoSuchElementException();
-
-            ElementT element = nextNode.data;
-            nextNode.alreadyTraversed = true;
-
-            while (nextNode != null && nextNode.alreadyTraversed) {
-                if (!nextNode.hasParent()) {
-                    nextNode.alreadyTraversed = false;
-                }
-                nextNode = nextNode.parent;
-
-                if (nextNode != null) {
-                    if (nextNode.hasLeftChild() && !nextNode.leftChild.alreadyTraversed) {
-                        nextNode = nextNode.leftChild;
-                        while (nextNode.hasRightChild()) {
-                            nextNode = nextNode.rightChild;
-                        }
-                    } else if (!nextNode.hasRightChild() || nextNode.rightChild.alreadyTraversed) {
-                        if (nextNode.hasLeftChild()) nextNode.leftChild.alreadyTraversed = false;
-                        if (nextNode.hasRightChild()) nextNode.rightChild.alreadyTraversed = false;
-                    }
-                }
-            }
-            return element;
-        }
-    }
-
-    private class Node {
-        public ElementT data;
-        public Node parent;
-        public Node leftChild;
-        public Node rightChild;
-        public boolean alreadyTraversed;
-
-        public Node(ElementT element, Node parent, Node leftChild, Node rightChild) {
-            this.data = element;
-            this.parent = parent;
-            this.leftChild = leftChild;
-            this.rightChild = rightChild;
-            this.alreadyTraversed = false;
-        }
-
-        public Node(ElementT element, Node parent) {
-            this(element, parent, null, null);
-        }
-
-        public Node(ElementT element) {
-            this(element, null);
-        }
-
-        public boolean hasParent() {
-            return parent != null;
-        }
-
-        public boolean hasLeftChild() {
-            return leftChild != null;
-        }
-
-        public boolean hasRightChild() {
-            return rightChild != null;
-        }
+        return new MyInorderIterator<>(root);
     }
 }

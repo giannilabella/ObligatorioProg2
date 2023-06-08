@@ -44,4 +44,10 @@ public interface MyBST<ElementT extends Comparable<ElementT>> extends MyCollecti
     ElementT successor(ElementT element);
 
     ElementT[] toArray(ElementT[] array);
+
+    ElementT[] toInorderArray(ElementT[] array);
+
+    ElementT[] toPreorderArray(ElementT[] array);
+
+    ElementT[] toPostorderArray(ElementT[] array);
 }

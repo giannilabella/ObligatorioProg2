@@ -178,7 +178,6 @@ class MyBSTImplTest {
                 () -> assertTrue(bst.add(15))
         );
         Iterator<Integer> preorderIterator = bst.preorderIterator();
-
         assertAll(
                 () -> assertEquals(8, preorderIterator.next()),
                 () -> assertEquals(4, preorderIterator.next()),
@@ -422,6 +421,131 @@ class MyBSTImplTest {
     }
 
     @Test
-    void toArray() {
+    void testToInorderArray() {
+        assertAll(
+                () -> assertTrue(bst.add(8)),
+                () -> assertTrue(bst.add(4)),
+                () -> assertTrue(bst.add(12)),
+
+                () -> assertTrue(bst.add(2)),
+                () -> assertTrue(bst.add(6)),
+
+                () -> assertTrue(bst.add(10)),
+                () -> assertTrue(bst.add(14)),
+
+                () -> assertTrue(bst.add(1)),
+                () -> assertTrue(bst.add(3)),
+                () -> assertTrue(bst.add(5)),
+                () -> assertTrue(bst.add(7)),
+
+                () -> assertTrue(bst.add(9)),
+                () -> assertTrue(bst.add(11)),
+                () -> assertTrue(bst.add(13)),
+                () -> assertTrue(bst.add(15))
+        );
+        Integer[] inorderArray = bst.toInorderArray(new Integer[10]);
+        assertAll(
+                () -> assertEquals(1, inorderArray[0]),
+                () -> assertEquals(2, inorderArray[1]),
+                () -> assertEquals(3, inorderArray[2]),
+                () -> assertEquals(4, inorderArray[3]),
+                () -> assertEquals(5, inorderArray[4]),
+                () -> assertEquals(6, inorderArray[5]),
+                () -> assertEquals(7, inorderArray[6]),
+                () -> assertEquals(8, inorderArray[7]),
+                () -> assertEquals(9, inorderArray[8]),
+                () -> assertEquals(10, inorderArray[9]),
+                () -> assertEquals(11, inorderArray[10]),
+                () -> assertEquals(12, inorderArray[11]),
+                () -> assertEquals(13, inorderArray[12]),
+                () -> assertEquals(14, inorderArray[13]),
+                () -> assertEquals(15, inorderArray[14])
+        );
+    }
+
+    @Test
+    void testToPreorderArray() {
+        assertAll(
+                () -> assertTrue(bst.add(8)),
+                () -> assertTrue(bst.add(4)),
+                () -> assertTrue(bst.add(12)),
+
+                () -> assertTrue(bst.add(2)),
+                () -> assertTrue(bst.add(6)),
+
+                () -> assertTrue(bst.add(10)),
+                () -> assertTrue(bst.add(14)),
+
+                () -> assertTrue(bst.add(1)),
+                () -> assertTrue(bst.add(3)),
+                () -> assertTrue(bst.add(5)),
+                () -> assertTrue(bst.add(7)),
+
+                () -> assertTrue(bst.add(9)),
+                () -> assertTrue(bst.add(11)),
+                () -> assertTrue(bst.add(13)),
+                () -> assertTrue(bst.add(15))
+        );
+        Integer[] preorderArray = bst.toPreorderArray(new Integer[10]);
+        assertAll(
+                () -> assertEquals(8, preorderArray[0]),
+                () -> assertEquals(4, preorderArray[1]),
+                () -> assertEquals(2, preorderArray[2]),
+                () -> assertEquals(1, preorderArray[3]),
+                () -> assertEquals(3, preorderArray[4]),
+                () -> assertEquals(6, preorderArray[5]),
+                () -> assertEquals(5, preorderArray[6]),
+                () -> assertEquals(7, preorderArray[7]),
+                () -> assertEquals(12, preorderArray[8]),
+                () -> assertEquals(10, preorderArray[9]),
+                () -> assertEquals(9, preorderArray[10]),
+                () -> assertEquals(11, preorderArray[11]),
+                () -> assertEquals(14, preorderArray[12]),
+                () -> assertEquals(13, preorderArray[13]),
+                () -> assertEquals(15, preorderArray[14])
+        );
+    }
+
+    @Test
+    void testToPostorderArray() {
+        assertAll(
+                () -> assertTrue(bst.add(8)),
+                () -> assertTrue(bst.add(4)),
+                () -> assertTrue(bst.add(12)),
+
+                () -> assertTrue(bst.add(2)),
+                () -> assertTrue(bst.add(6)),
+
+                () -> assertTrue(bst.add(10)),
+                () -> assertTrue(bst.add(14)),
+
+                () -> assertTrue(bst.add(1)),
+                () -> assertTrue(bst.add(3)),
+                () -> assertTrue(bst.add(5)),
+                () -> assertTrue(bst.add(7)),
+
+                () -> assertTrue(bst.add(9)),
+                () -> assertTrue(bst.add(11)),
+                () -> assertTrue(bst.add(13)),
+                () -> assertTrue(bst.add(15))
+        );
+        Integer[] postorderArray = bst.toPostorderArray(new Integer[10]);
+        assertAll(
+                () -> assertEquals(15, postorderArray[0]),
+                () -> assertEquals(13, postorderArray[1]),
+                () -> assertEquals(14, postorderArray[2]),
+                () -> assertEquals(11, postorderArray[3]),
+                () -> assertEquals(9, postorderArray[4]),
+                () -> assertEquals(10, postorderArray[5]),
+                () -> assertEquals(12, postorderArray[6]),
+                () -> assertEquals(7, postorderArray[7]),
+                () -> assertEquals(5, postorderArray[8]),
+                () -> assertEquals(6, postorderArray[9]),
+                () -> assertEquals(3, postorderArray[10]),
+                () -> assertEquals(1, postorderArray[11]),
+                () -> assertEquals(2, postorderArray[12]),
+                () -> assertEquals(4, postorderArray[13]),
+                () -> assertEquals(8, postorderArray[14])
+        );
     }
 }
