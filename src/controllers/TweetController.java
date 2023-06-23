@@ -1,7 +1,7 @@
 package controllers;
 
-import models.Tweet;
-import models.User;
+import entities.Tweet;
+import entities.User;
 import uy.edu.um.prog2.adt.list.MyList;
 import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 
@@ -21,5 +21,9 @@ public class TweetController {
         for (Tweet tweet: tweets) {
             System.out.println(tweet.getId());
         }
+    }
+
+    public int getTweetCount() {
+        return tweets.size();
     }
 }
