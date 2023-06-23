@@ -8,7 +8,7 @@ public class DriverController {
     private static DriverController INSTANCE;
     private final MyList<Driver> drivers;
 
-    public DriverController() {
+    private DriverController() {
         this.drivers = new MySinglyLinkedList<>();
     }
 
