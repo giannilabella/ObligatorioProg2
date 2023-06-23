@@ -1,18 +1,12 @@
-package models;
+package entities;
 
 import java.util.Objects;
 
-public class User {
-    private final long id;
+public class Driver {
     private final String name;
 
-    public User(long id, String name) {
-        this.id = id;
+    public Driver(String name) {
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -23,12 +17,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
+        Driver driver = (Driver) o;
+        return Objects.equals(name, driver.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name);
     }
 }
