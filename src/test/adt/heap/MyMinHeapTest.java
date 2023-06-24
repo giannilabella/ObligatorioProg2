@@ -36,6 +36,12 @@ class MyMinHeapTest {
     @Test
     void testAddAndRemove() {
         assertAll(
+                () -> assertTrue(heap.add(10)),
+                () -> assertTrue(heap.add(9)),
+                () -> assertTrue(heap.add(8)),
+                () -> assertTrue(heap.add(7)),
+                () -> assertTrue(heap.add(6)),
+                () -> assertTrue(heap.add(5)),
                 () -> assertTrue(heap.add(4)),
                 () -> assertTrue(heap.add(3)),
                 () -> assertTrue(heap.add(2)),
@@ -43,7 +49,13 @@ class MyMinHeapTest {
                 () -> assertEquals(1, heap.remove()),
                 () -> assertEquals(2, heap.remove()),
                 () -> assertEquals(3, heap.remove()),
-                () -> assertEquals(4, heap.remove())
+                () -> assertEquals(4, heap.remove()),
+                () -> assertEquals(5, heap.remove()),
+                () -> assertEquals(6, heap.remove()),
+                () -> assertEquals(7, heap.remove()),
+                () -> assertEquals(8, heap.remove()),
+                () -> assertEquals(9, heap.remove()),
+                () -> assertEquals(10, heap.remove())
         );
     }
 

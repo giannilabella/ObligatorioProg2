@@ -5,6 +5,7 @@ import uy.edu.um.prog2.adt.collection.MyCollection;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<ElementT> {
     private ElementT[] elements;
@@ -117,11 +118,12 @@ public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
         elements[swappedElementIndex] = swappedElement;
 
         while (
-                swappedElementIndex < size - 1 &&
-                leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0 &&
-                rightChildOf(swappedElementIndex).compareTo(swappedElement) < 0
+                swappedElementIndex < size && (
+                    (leftChildIndex(swappedElementIndex) < size && leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0) ||
+                    (rightChildIndex(swappedElementIndex) < size && rightChildOf(swappedElementIndex).compareTo(swappedElement) < 0)
+                )
         ) {
-            if (leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0) {
+            if (rightChildIndex(swappedElementIndex) >= size || leftChildOf(swappedElementIndex).compareTo(rightChildOf(swappedElementIndex)) < 0) {
                 swapAt(leftChildIndex(swappedElementIndex), swappedElementIndex);
                 swappedElementIndex = leftChildIndex(swappedElementIndex);
             } else {
@@ -149,11 +151,12 @@ public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
         elements[swappedElementIndex] = swappedElement;
 
         while (
-                swappedElementIndex < size - 1 &&
-                leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0 &&
-                rightChildOf(swappedElementIndex).compareTo(swappedElement) < 0
+                swappedElementIndex < size && (
+                    (leftChildIndex(swappedElementIndex) < size && leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0) ||
+                    (rightChildIndex(swappedElementIndex) < size && rightChildOf(swappedElementIndex).compareTo(swappedElement) < 0)
+                )
         ) {
-            if (leftChildOf(swappedElementIndex).compareTo(swappedElement) < 0) {
+            if (rightChildIndex(swappedElementIndex) >= size || leftChildOf(swappedElementIndex).compareTo(rightChildOf(swappedElementIndex)) < 0) {
                 swapAt(leftChildIndex(swappedElementIndex), swappedElementIndex);
                 swappedElementIndex = leftChildIndex(swappedElementIndex);
             } else {
@@ -200,7 +203,7 @@ public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
 
     @Override
     public Iterator<ElementT> iterator() {
-        return new MyIterator<>(this);
+        return new MyIterator();
     }
 
     @SuppressWarnings("unchecked")
@@ -254,5 +257,25 @@ public class MyMinHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
 
         elements[posA] = elementB;
         elements[posB] = elementA;
+    }
+
+    private class MyIterator implements Iterator<ElementT> {
+        private int index;
+
+        MyIterator() {
+            this.index = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index >= elements.length;
+        }
+
+        @Override
+        public ElementT next() {
+            if (!hasNext()) throw new NoSuchElementException();
+
+            return elements[index++];
+        }
     }
 }
