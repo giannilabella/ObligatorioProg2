@@ -1,7 +1,10 @@
 package views;
 
 import controllers.DriverController;
+import controllers.UserController;
 import entities.MentionedDriver;
+import entities.User;
+import uy.edu.um.prog2.adt.collection.MyCollection;
 
 import java.util.Scanner;
 
@@ -64,7 +67,8 @@ public class MainMenuView {
         Scanner scanner = new Scanner(System.in);
 
         DriverController driverController = DriverController.getInstance();
-        for (MentionedDriver driver: driverController.getMostMentionedDriversByMonthAndYear((byte) 8, (short) 2021, numberOfDrivers)) {
+        MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear((byte) 8, (short) 2021, numberOfDrivers);
+        for (MentionedDriver driver: mostMentionedDrivers) {
             System.out.println("Driver " + driver.getFullName() + " is mentioned " + driver.mentionsCount() + " times");
         }
 
@@ -74,6 +78,12 @@ public class MainMenuView {
     
     private static void getMostActiveUsers(int numberOfUsers) {
         Scanner scanner = new Scanner(System.in);
+
+        UserController userController = UserController.getInstance();
+        MyCollection<User> mostActiveUsers = userController.getMostActiveUsers(numberOfUsers);
+        for (User user: mostActiveUsers) {
+            System.out.println("User \"" + user.getName() + "\" has tweeted " + user.getTweetsCount() + " times and " + (user.isVerified() ? "is verified" : "is not verified"));
+        }
 
         System.out.println("\nPress enter to go back to the menu");
         scanner.nextLine();

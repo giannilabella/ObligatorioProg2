@@ -1,11 +1,13 @@
 package controllers;
 
+import entities.Tweet;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
-import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
 import uy.edu.um.prog2.adt.hashtable.MyHashtable;
+import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
+import uy.edu.um.prog2.adt.heap.MyHeap;
+import uy.edu.um.prog2.adt.heap.MyMaxHeap;
 import uy.edu.um.prog2.adt.list.MyList;
-import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 
 public class UserController {
     private static UserController INSTANCE;
@@ -39,5 +41,26 @@ public class UserController {
 
     public int getUsersCount() {
         return users.size();
+    }
+
+    public MyCollection<User> getMostActiveUsers(int numberOfUsers) {
+        if (!areUserTweetsCounted) {
+            TweetController tweetController = TweetController.getInstance();
+            for (Tweet tweet: tweetController.getTweets()) {
+                tweet.getUser().incrementTweetCount();
+            }
+        }
+        MyCollection<User> mostActiveUsers = users.values();
+
+        MyHeap<User> mostActiveUsersHeap = new MyMaxHeap<>();
+        mostActiveUsersHeap.addAll(mostActiveUsers);
+
+        mostActiveUsers.clear();
+        for (int i = 0; i < numberOfUsers; i++) {
+            User user = mostActiveUsersHeap.remove();
+            if (user == null) break;
+            mostActiveUsers.add(user);
+        }
+        return mostActiveUsers;
     }
 }

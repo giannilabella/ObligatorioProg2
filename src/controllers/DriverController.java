@@ -51,7 +51,7 @@ public class DriverController {
         return drivers.size();
     }
 
-    public MyList<MentionedDriver> getMostMentionedDriversByMonthAndYear(byte month, short year, int numberOfDrivers) {
+    public MyCollection<MentionedDriver> getMostMentionedDriversByMonthAndYear(byte month, short year, int numberOfDrivers) {
         int[] mentionCount = new int[drivers.size()];
         Arrays.fill(mentionCount, 0);
 
