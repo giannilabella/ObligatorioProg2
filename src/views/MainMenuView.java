@@ -6,6 +6,7 @@ import entities.MentionedDriver;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MainMenuView {
@@ -29,36 +30,32 @@ public class MainMenuView {
             Scanner scanner = new Scanner(System.in);
             selection = scanner.nextInt();
             switch (selection) {
-                case 1:
+                case 1 -> {
                     System.out.println("========== Listing most mentioned drivers! ==========\n");
                     getMostMentionedDrivers(10);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("========== Listing users with more tweets! ==========\n");
                     getMostActiveUsers(15);
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.println("======= Getting number of different hashtags! =======\n");
                     getNumberOfDifferentHashtags();
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.println("======= Getting most used hashtag in the day! =======\n");
                     getMostUsedHashtag();
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     System.out.println("=========== Listing most favorited users! ===========\n");
                     getMostFavoritedUsers(7);
-                    break;
-                case 6:
+                }
+                case 6 -> {
                     System.out.println("============= Getting number of tweets! =============\n");
                     getNumberOfTweetWithWordOrPhrase();
-                    break;
-                case 0:
-                    System.out.println("====================== Exiting! =====================\n");
-                    break;
-                default:
-                    System.out.println("================== Invalid option! ==================\n");
-                    break;
+                }
+                case 0 -> System.out.println("====================== Exiting! =====================\n");
+                default -> System.out.println("================== Invalid option! ==================\n");
             }
         } 
     }
@@ -66,54 +63,64 @@ public class MainMenuView {
     private static void getMostMentionedDrivers(int numberOfDrivers) {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.print("Insert the month: ");
+        byte month = scanner.nextByte();
+
+        System.out.print("Insert the year: ");
+        short year = scanner.nextShort();
+
+        System.out.println();
+
         DriverController driverController = DriverController.getInstance();
-        MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear((byte) 8, (short) 2021, numberOfDrivers);
+        MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear(month, year, numberOfDrivers);
         for (MentionedDriver driver: mostMentionedDrivers) {
             System.out.println("Driver " + driver.getFullName() + " is mentioned " + driver.mentionsCount() + " times");
         }
 
-        System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        waitForEnter();
     }
     
     private static void getMostActiveUsers(int numberOfUsers) {
-        Scanner scanner = new Scanner(System.in);
-
         UserController userController = UserController.getInstance();
         MyCollection<User> mostActiveUsers = userController.getMostActiveUsers(numberOfUsers);
         for (User user: mostActiveUsers) {
             System.out.println("User \"" + user.getName() + "\" has tweeted " + user.getTweetsCount() + " times and " + (user.isVerified() ? "is verified" : "is not verified"));
         }
 
-        System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        waitForEnter();
     }
     
     private static void getNumberOfDifferentHashtags() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        System.out.print("Insert the day: ");
+        byte day = scanner.nextByte();
+
+        waitForEnter();
     }
     
     private static void getMostUsedHashtag() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        waitForEnter();
     }
     
     private static void getMostFavoritedUsers(int numberOfUsers) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        waitForEnter();
     }
 
     private static void getNumberOfTweetWithWordOrPhrase() {
         Scanner scanner = new Scanner(System.in);
 
+        waitForEnter();
+    }
+
+    private static void waitForEnter() {
         System.out.println("\nPress enter to go back to the menu");
-        scanner.nextLine();
+        try {
+            System.in.read();
+        } catch (IOException ignored) {}
     }
 }
