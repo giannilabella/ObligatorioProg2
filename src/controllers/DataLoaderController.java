@@ -1,8 +1,6 @@
-package views;
+package controllers;
 
-import controllers.DriverController;
 import entities.User;
-import controllers.TweetController;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -12,19 +10,15 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class DataLoader {
-    private static final Pattern driverPattern = Pattern.compile("\\S+ .+");
+public class DataLoaderController {
+    private static final Pattern driverNamePattern = Pattern.compile("\\S+ .+");
     private static final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}");
 
     public static void loadDrivers(Path filePath) {
-        System.out.println("Reading drivers file...");
-        long startTime = System.nanoTime();
-
         Reader reader;
         try {
             reader = Files.newBufferedReader(filePath);
@@ -38,7 +32,7 @@ public class DataLoader {
         Stream<String> lines = bufferedReader.lines();
 
         DriverController driverController = DriverController.getInstance();
-        lines.filter(line -> driverPattern.matcher(line).matches()).forEach(driverController::create);
+        lines.filter(line -> driverNamePattern.matcher(line).matches()).forEach(driverController::create);
 
         try {
             reader.close();
@@ -46,16 +40,9 @@ public class DataLoader {
             System.out.println("Error closing file reader!");
             exception.printStackTrace();
         }
-
-        long elapsedTime = System.nanoTime() - startTime;
-        System.out.println("Reading drivers file took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
-        System.out.println("Loaded " + driverController.getDriversCount() + " drivers!");
     }
 
     public static void loadDataset(Path filePath) {
-        System.out.println("Reading dataset file...");
-        long startTime = System.nanoTime();
-
         Reader reader;
         Iterable<CSVRecord> records;
         try {
@@ -87,7 +74,7 @@ public class DataLoader {
             String tweetSource = record.get(12);
             String tweetIsRetweeted = record.get(13);
 
-            loadTweet(tweetController, tweetId, tweetContent, tweetDate, null);
+            loadTweet(tweetId, tweetContent, tweetDate, null);
         }
 
         try {
@@ -96,13 +83,9 @@ public class DataLoader {
             System.out.println("Error closing file reader!");
             exception.printStackTrace();
         }
-
-        long elapsedTime = System.nanoTime() - startTime;
-        System.out.println("Reading dataset file took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
-        System.out.println("Loaded " + tweetController.getTweetCount() + " tweets!");
     }
 
-    private static void loadTweet(TweetController tweetController, String rawId, String rawContent, String rawDate, User user) {
+    private static void loadTweet(String rawId, String rawContent, String rawDate, User user) {
         long id = 0;
         try {
             id = Long.parseLong(rawId);
@@ -113,14 +96,15 @@ public class DataLoader {
 
         String content = rawContent;
 
-        Matcher dateMatcher = datePattern.matcher(rawDate);
-        if (!dateMatcher.matches()) {
+        boolean validDate = datePattern.matcher(rawDate).matches();
+        if (!validDate) {
             System.out.println("Not loading tweet of id " + rawId + ", invalid date: " + rawDate);
             return;
         };
         byte month = Byte.parseByte(rawDate.substring(5, 7));
         short year = Short.parseShort(rawDate.substring(0, 4));
 
+        TweetController tweetController = TweetController.getInstance();
         tweetController.create(id, content, month, year, user);
     }
 }
