@@ -3,6 +3,7 @@ package controllers;
 import entities.Driver;
 import entities.MentionedDriver;
 import entities.Tweet;
+import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;
 import uy.edu.um.prog2.adt.list.MyList;
@@ -40,6 +41,10 @@ public class DriverController {
 
         Driver driver = new Driver(id, name, surname, fullName, driverPattern);
         drivers.add(driver);
+    }
+
+    public MyCollection<Driver> getDrivers() {
+        return drivers;
     }
 
     public int getDriversCount() {

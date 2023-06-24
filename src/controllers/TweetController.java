@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Tweet;
 import entities.User;
+import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.list.MyList;
 import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 
@@ -26,7 +27,7 @@ public class TweetController {
         tweets.add(tweet);
     }
 
-    public MyList<Tweet> getTweets() {
+    public MyCollection<Tweet> getTweets() {
         return tweets;
     }
 

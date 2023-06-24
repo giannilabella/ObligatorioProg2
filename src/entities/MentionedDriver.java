@@ -2,7 +2,7 @@ package entities;
 
 import java.util.Objects;
 
-public record MentionedDriver(Driver driver, int mentionCount) implements Comparable<MentionedDriver> {
+public record MentionedDriver(Driver driver, int mentionsCount) implements Comparable<MentionedDriver> {
     public int getId() {
         return driver.getId();
     }
@@ -29,6 +29,6 @@ public record MentionedDriver(Driver driver, int mentionCount) implements Compar
 
     @Override
     public int compareTo(MentionedDriver o) {
-        return Integer.compare(this.mentionCount, o.mentionCount);
+        return Integer.compare(this.mentionsCount, o.mentionsCount);
     }
 }
