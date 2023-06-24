@@ -74,7 +74,8 @@ public class DataLoaderController {
             String tweetSource = record.get(12);
             String tweetIsRetweeted = record.get(13);
 
-            loadTweet(tweetId, tweetContent, tweetDate, null);
+            User user = loadUser(userName, userIsVerified);
+            loadTweet(tweetId, tweetContent, tweetDate, user);
         }
 
         try {
@@ -83,6 +84,14 @@ public class DataLoaderController {
             System.out.println("Error closing file reader!");
             exception.printStackTrace();
         }
+    }
+
+    private static User loadUser(String rawName, String rawIsVerified) {
+        String name = rawName;
+        boolean isVerified = Boolean.parseBoolean(rawIsVerified);;
+
+        UserController userController = UserController.getInstance();
+        return userController.create(name, isVerified);
     }
 
     private static void loadTweet(String rawId, String rawContent, String rawDate, User user) {
