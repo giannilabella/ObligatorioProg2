@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Hashtag;
 import entities.User;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -10,12 +11,12 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class DataLoaderController {
     private static final Pattern driverNamePattern = Pattern.compile("\\S+ .+");
+    private static final Pattern hashtagListPattern = Pattern.compile("|\\[('\\S+')+(, *'\\S+')*]");
     private static final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}");
 
     public static void loadDrivers(Path filePath) {
@@ -57,7 +58,6 @@ public class DataLoaderController {
         Iterator<CSVRecord> iterator = records.iterator();
         if (iterator.hasNext()) iterator.next();
 
-        TweetController tweetController = TweetController.getInstance();
         for (CSVRecord record: records) {
             String tweetId = record.get(0);
             String userName = record.get(1);
@@ -75,7 +75,8 @@ public class DataLoaderController {
             String tweetIsRetweeted = record.get(13);
 
             User user = loadUser(userName, userIsVerified);
-            loadTweet(tweetId, tweetContent, tweetDate, user);
+            Hashtag[] hashtags = loadHashtags(tweetHashtags);
+            loadTweet(tweetId, tweetContent, tweetDate, user, hashtags);
         }
 
         try {
@@ -87,33 +88,49 @@ public class DataLoaderController {
     }
 
     private static User loadUser(String rawName, String rawIsVerified) {
-        String name = rawName;
-        boolean isVerified = Boolean.parseBoolean(rawIsVerified);;
+        boolean isVerified = Boolean.parseBoolean(rawIsVerified);
 
         UserController userController = UserController.getInstance();
-        return userController.create(name, isVerified);
+        return userController.create(rawName, isVerified);
     }
 
-    private static void loadTweet(String rawId, String rawContent, String rawDate, User user) {
-        long id = 0;
+    private static Hashtag[] loadHashtags(String rawHashtags) {
+        boolean validHashtagList = hashtagListPattern.matcher(rawHashtags).matches();
+        if (!validHashtagList) {
+            System.out.println("Not loading invalid hashtags: " + rawHashtags);
+            return new Hashtag[0];
+        }
+
+        if (rawHashtags.equals("")) return new Hashtag[0];
+
+        String[] hashtagsTexts = rawHashtags.substring(2, rawHashtags.length() - 3).split(", *");
+        Hashtag[] hashtags = new Hashtag[hashtagsTexts.length];
+
+        HashtagController hashtagController = HashtagController.getInstance();
+        for (int i = 0; i < hashtagsTexts.length; i++) {
+            hashtags[i] = hashtagController.create(hashtagsTexts[i]);
+        }
+        return hashtags;
+    }
+
+    private static void loadTweet(String rawId, String rawContent, String rawDate, User user, Hashtag[] hashtags) {
+        long id;
         try {
             id = Long.parseLong(rawId);
         } catch (NumberFormatException exception) {
-            System.out.println("Not loading tweet of id " + rawId);
+            System.out.println("Not loading tweet with invalid id: " + rawId);
             return;
         }
-
-        String content = rawContent;
 
         boolean validDate = datePattern.matcher(rawDate).matches();
         if (!validDate) {
             System.out.println("Not loading tweet of id " + rawId + ", invalid date: " + rawDate);
             return;
-        };
+        }
         byte month = Byte.parseByte(rawDate.substring(5, 7));
         short year = Short.parseShort(rawDate.substring(0, 4));
 
         TweetController tweetController = TweetController.getInstance();
-        tweetController.create(id, content, month, year, user);
+        tweetController.create(id, rawContent, month, year, user, hashtags);
     }
 }

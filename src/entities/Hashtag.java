@@ -2,20 +2,12 @@ package entities;
 
 import java.util.Objects;
 
-public class HashTag {
-    private final long id;
-    private final String text;
-
-    public HashTag(long id, String text) {
-        this.id = id;
-        this.text = text;
-    }
-
+public record Hashtag(long id, String hashtagText) {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HashTag hashTag = (HashTag) o;
+        Hashtag hashTag = (Hashtag) o;
         return id == hashTag.id;
     }
 
