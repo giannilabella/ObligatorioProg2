@@ -30,12 +30,6 @@ public class TweetController {
         return tweets;
     }
 
-    public void printAll() {
-        for (Tweet tweet: tweets) {
-            System.out.println(tweet.getId());
-        }
-    }
-
     public int getTweetCount() {
         return tweets.size();
     }
