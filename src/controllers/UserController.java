@@ -3,11 +3,10 @@ package controllers;
 import entities.Tweet;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
-import uy.edu.um.prog2.adt.hashtable.MyHashtable;
-import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
 import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;
-import uy.edu.um.prog2.adt.list.MyList;
+import uy.edu.um.prog2.adt.hashtable.MyHashtable;
+import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
 
 public class UserController {
     private static UserController INSTANCE;
@@ -49,6 +48,7 @@ public class UserController {
             for (Tweet tweet: tweetController.getTweets()) {
                 tweet.getUser().incrementTweetCount();
             }
+            areUserTweetsCounted = true;
         }
         MyCollection<User> mostActiveUsers = users.values();
 
