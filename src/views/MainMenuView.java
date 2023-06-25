@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class MainMenuView {
     public static void main(String[] args) {
@@ -96,20 +97,30 @@ public class MainMenuView {
         System.out.println();
 
         DriverController driverController = DriverController.getInstance();
+        final long startTime = System.nanoTime();
+
         MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear(month, year, 10);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         for (MentionedDriver driver: mostMentionedDrivers) {
             System.out.println("Driver " + driver.getFullName() + " is mentioned " + driver.mentionsCount() + " times");
         }
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
     
     private static void getMostActiveUsers() {
         UserController userController = UserController.getInstance();
+        final long startTime = System.nanoTime();
+
         MyCollection<User> mostActiveUsers = userController.getMostActiveUsers(15);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         for (User user: mostActiveUsers) {
             System.out.println("User \"" + user.getName() + "\" has tweeted " + user.getTweetsCount() + " times and " + (user.isVerified() ? "is verified" : "is not verified"));
         }
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
@@ -133,8 +144,13 @@ public class MainMenuView {
         System.out.println();
 
         HashtagController hashtagController = HashtagController.getInstance();
+        final long startTime = System.nanoTime();
+
         int numberOfDifferentHashtags = hashtagController.getNumberOfDifferentHashtagsInADay(day, month, year);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         System.out.println("In the day " + date + ", " + numberOfDifferentHashtags + " different hashtags were used");
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
@@ -158,22 +174,32 @@ public class MainMenuView {
         System.out.println();
 
         HashtagController hashtagController = HashtagController.getInstance();
+        final long startTime = System.nanoTime();
+
         UsedHashtag mostUsedHashtag = hashtagController.getMostUsedHashtagInTheDay(day, month, year);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         if (mostUsedHashtag != null) {
             System.out.println("In the day " + date + ", the most used hashtag is #" + mostUsedHashtag.getHashtagText() + " with " + mostUsedHashtag.getUsesCount() + " uses");
         } else {
             System.out.println("In the day " + date + ", no hashtags were used");
         }
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
     
     private static void getMostFavoritedUsers() {
         UserController userController = UserController.getInstance();
+        final long startTime = System.nanoTime();
+
         MyCollection<User> mostFavoritedUsers = userController.getMostFavoritedUsers(7);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         for (User user: mostFavoritedUsers) {
             System.out.println("User \"" + user.getName() + "\" has " + user.getFavoritesCount() + " favorites");
         }
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
@@ -205,20 +231,26 @@ public class MainMenuView {
         System.out.println();
 
         TweetController tweetController = TweetController.getInstance();
+        final long startTime = System.nanoTime();
+
         int numberOfTweets = tweetController.getNumberOfTweetsWithString(searchString, caseSensitive);
+        final long elapsedTime = System.nanoTime() - startTime;
+
         switch (numberOfTweets) {
             case 0 -> System.out.println("There are no tweets that contain the string \"" + searchString + "\"");
             case 1 -> System.out.println("There is one tweet that contain the string \"" + searchString + "\"");
             default -> System.out.println("There are " + numberOfTweets + " tweets that contain the string \"" + searchString + "\"");
         }
+        System.out.println("\nReport took " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " milliseconds!");
 
         waitForEnter();
     }
 
     private static void waitForEnter() {
-        System.out.println("\nPress enter to go back to the menu");
+        System.out.print("Press enter to go back to the menu...");
         try {
             int ignored = System.in.read();
+            System.out.println();
         } catch (IOException ignored) {}
     }
 }
