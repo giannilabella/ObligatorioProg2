@@ -13,7 +13,7 @@ public class HashtagController {
     private final MyClosedHashingHashtable<HashableString, Hashtag> hashtags;
 
     private HashtagController() {
-        this.hashtags = new MyClosedHashingHashtable<>(65000);
+        this.hashtags = new MyClosedHashingHashtable<>(65000, 0.85f);
     }
 
     public static HashtagController getInstance() {
@@ -55,7 +55,7 @@ public class HashtagController {
     }
 
     public UsedHashtag getMostUsedHashtagInTheDay(byte day, byte month, short year) {
-        MyHashtable<Integer, UsedHashtag> usedHashtags = new MyClosedHashingHashtable<>(hashtags.size());
+        MyHashtable<Integer, UsedHashtag> usedHashtags = new MyClosedHashingHashtable<>(hashtags.size(), 1);
         Hashtag ignoredHashtag = hashtags.get(new HashableString("F1"));
 
         TweetController tweetController = TweetController.getInstance();
