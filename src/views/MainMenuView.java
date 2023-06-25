@@ -9,7 +9,6 @@ import uy.edu.um.prog2.adt.collection.MyCollection;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class MainMenuView {
@@ -108,12 +107,11 @@ public class MainMenuView {
     }
     
     private static void getNumberOfDifferentHashtags() {
-        Scanner scanner = new Scanner(System.in);
-
         System.out.print("Insert the date (yyyy-mm-dd): ");
         String date;
         try {
-           date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+            Scanner scanner = new Scanner(System.in);
+            date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
         } catch (InputMismatchException ignored) {
             System.out.println("Invalid date format!");
             waitForEnter();
@@ -132,19 +130,40 @@ public class MainMenuView {
     }
     
     private static void getMostUsedHashtag() {
-        Scanner scanner = new Scanner(System.in);
+        System.out.print("Insert the date (yyyy-mm-dd): ");
+        String date;
+        try {
+            Scanner scanner = new Scanner(System.in);
+            date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+        } catch (InputMismatchException ignored) {
+            System.out.println("Invalid date format!");
+            waitForEnter();
+            return;
+        }
+
+        byte day = Byte.parseByte(date.substring(8, 10));
+        byte month = Byte.parseByte(date.substring(5, 7));
+        short year = Short.parseShort(date.substring(0, 4));
+
+        // TODO: list most used hashtags
 
         waitForEnter();
     }
     
     private static void getMostFavoritedUsers(int numberOfUsers) {
-        Scanner scanner = new Scanner(System.in);
+        UserController userController = UserController.getInstance();
+        MyCollection<User> mostFavoritedUsers = userController.getMostFavoritedUsers(numberOfUsers);
+        for (User user: mostFavoritedUsers) {
+            System.out.println("User \"" + user.getName() + "\" has " + user.getFavoritesCount() + " favorites");
+        }
 
         waitForEnter();
     }
 
     private static void getNumberOfTweetWithWordOrPhrase() {
         Scanner scanner = new Scanner(System.in);
+
+        // TODO: get word or phrase and get number of tweets with it
 
         waitForEnter();
     }

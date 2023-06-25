@@ -74,7 +74,7 @@ public class DataLoaderController {
             String tweetSource = record.get(12);
             String tweetIsRetweeted = record.get(13);
 
-            User user = loadUser(userName, userIsVerified);
+            User user = loadUser(userName, userFavoritesCount, userIsVerified);
             Hashtag[] hashtags = loadHashtags(tweetHashtags);
             loadTweet(tweetId, tweetContent, tweetDate, user, hashtags);
         }
@@ -87,11 +87,18 @@ public class DataLoaderController {
         }
     }
 
-    private static User loadUser(String rawName, String rawIsVerified) {
+    private static User loadUser(String rawName, String rawFavoritesCount, String rawIsVerified) {
+        int favoritesCount;
+        try {
+            favoritesCount = Integer.parseInt(rawFavoritesCount.split("\\.")[0]);
+        } catch (NumberFormatException exception) {
+            System.out.println("User of name \"" + rawName + "\" has invalid number of favorites: " + rawFavoritesCount + ", so it is being set to 0");
+            favoritesCount = 0;
+        }
         boolean isVerified = Boolean.parseBoolean(rawIsVerified);
 
         UserController userController = UserController.getInstance();
-        return userController.create(rawName, isVerified);
+        return userController.create(rawName, favoritesCount, isVerified);
     }
 
     private static Hashtag[] loadHashtags(String rawHashtags) {

@@ -5,12 +5,15 @@ import java.util.Objects;
 public class User implements Comparable<User> {
     private final long id;
     private final String name;
+    private final int favoritesCount;
     private final boolean isVerified;
     private int tweetsCount;
+    private UserComparingMethods comparingMethod;
 
-    public User(long id, String name, boolean isVerified) {
+    public User(long id, String name, int favoritesCount, boolean isVerified) {
         this.id = id;
         this.name = name;
+        this.favoritesCount = favoritesCount;
         this.isVerified = isVerified;
         this.tweetsCount = 0;
     }
@@ -23,6 +26,10 @@ public class User implements Comparable<User> {
         return name;
     }
 
+    public long getFavoritesCount() {
+        return favoritesCount;
+    }
+
     public boolean isVerified() {
         return isVerified;
     }
@@ -33,6 +40,10 @@ public class User implements Comparable<User> {
 
     public void incrementTweetCount() {
         tweetsCount++;
+    }
+
+    public void setComparingMethod(UserComparingMethods comparingMethod) {
+        this.comparingMethod = comparingMethod;
     }
 
     @Override
@@ -50,6 +61,12 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User o) {
-        return Integer.compare(this.tweetsCount, o.tweetsCount);
+        int result = 0;
+        if (comparingMethod == UserComparingMethods.TWEETS_COUNT) {
+            result = Integer.compare(this.tweetsCount, o.tweetsCount);
+        } else if (comparingMethod == UserComparingMethods.FAVORITES_COUNT) {
+            result = Integer.compare(this.favoritesCount, o.favoritesCount);
+        }
+        return result;
     }
 }

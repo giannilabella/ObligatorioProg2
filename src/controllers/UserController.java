@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Tweet;
 import entities.User;
+import entities.UserComparingMethods;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;
@@ -26,10 +27,10 @@ public class UserController {
         return INSTANCE;
     }
 
-    public User create(String name, boolean isVerified) {
+    public User create(String name, int favoritesCount, boolean isVerified) {
         if (users.containsKey(name)) return users.get(name);
 
-        User user = new User(users.size(), name, isVerified);
+        User user = new User(users.size(), name, favoritesCount, isVerified);
         users.put(name, user);
         return user;
     }
@@ -53,7 +54,10 @@ public class UserController {
         MyCollection<User> mostActiveUsers = users.values();
 
         MyHeap<User> mostActiveUsersHeap = new MyMaxHeap<>();
-        mostActiveUsersHeap.addAll(mostActiveUsers);
+        for (User user: mostActiveUsers) {
+            user.setComparingMethod(UserComparingMethods.TWEETS_COUNT);
+            mostActiveUsersHeap.add(user);
+        }
 
         mostActiveUsers.clear();
         for (int i = 0; i < numberOfUsers; i++) {
@@ -62,5 +66,22 @@ public class UserController {
             mostActiveUsers.add(user);
         }
         return mostActiveUsers;
+    }
+
+    public MyCollection<User> getMostFavoritedUsers(int numberOfUsers) {
+        MyHeap<User> mostFavoritedUsersHeap = new MyMaxHeap<>();
+        MyCollection<User> mostFavoritedUsers = users.values();
+        for (User user: mostFavoritedUsers) {
+            user.setComparingMethod(UserComparingMethods.FAVORITES_COUNT);
+            mostFavoritedUsersHeap.add(user);
+        }
+
+        mostFavoritedUsers.clear();
+        for (int i = 0; i < numberOfUsers; i++) {
+            User user = mostFavoritedUsersHeap.remove();
+            if (user == null) break;
+            mostFavoritedUsers.add(user);
+        }
+        return mostFavoritedUsers;
     }
 }

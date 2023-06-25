@@ -1,6 +1,5 @@
 package controllers;
 
-import entities.Driver;
 import entities.Hashtag;
 import entities.Tweet;
 import uy.edu.um.prog2.adt.collection.MyCollection;
