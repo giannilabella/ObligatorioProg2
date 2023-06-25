@@ -1,11 +1,12 @@
 package views;
 
+import entities.User;
+import entities.UsedHashtag;
+import entities.MentionedDriver;
+import controllers.UserController;
+import controllers.TweetController;
 import controllers.DriverController;
 import controllers.HashtagController;
-import controllers.UserController;
-import entities.MentionedDriver;
-import entities.UsedHashtag;
-import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class MainMenuView {
                 }
                 case 6 -> {
                     System.out.println("============= Getting number of tweets! =============\n");
-                    getNumberOfTweetWithWordOrPhrase();
+                    getNumberOfTweetsWithString();
                 }
                 case 0 -> System.out.println("====================== Exiting! =====================\n");
                 default -> System.out.println("================== Invalid option! ==================\n");
@@ -177,10 +178,39 @@ public class MainMenuView {
         waitForEnter();
     }
 
-    private static void getNumberOfTweetWithWordOrPhrase() {
+    private static void getNumberOfTweetsWithString() {
         Scanner scanner = new Scanner(System.in);
 
-        // TODO: get word or phrase and get number of tweets with it
+        System.out.print("Insert the string: ");
+        String searchString;
+        try {
+            searchString = scanner.next();
+        } catch (NoSuchElementException ignored) {
+            System.out.println("Empty string!");
+            waitForEnter();
+            return;
+        }
+
+        System.out.print("Match case (y/n): ");
+        boolean caseSensitive;
+        try {
+            String selectionString = scanner.next();
+            caseSensitive = selectionString.equals("y");
+        } catch (NoSuchElementException ignored) {
+            System.out.println("Empty string!");
+            waitForEnter();
+            return;
+        }
+
+        System.out.println();
+
+        TweetController tweetController = TweetController.getInstance();
+        int numberOfTweets = tweetController.getNumberOfTweetsWithString(searchString, caseSensitive);
+        switch (numberOfTweets) {
+            case 0 -> System.out.println("There are no tweets that contain the string \"" + searchString + "\"");
+            case 1 -> System.out.println("There is one tweet that contain the string \"" + searchString + "\"");
+            default -> System.out.println("There are " + numberOfTweets + " tweets that contain the string \"" + searchString + "\"");
+        }
 
         waitForEnter();
     }
