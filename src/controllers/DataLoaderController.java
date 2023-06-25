@@ -122,7 +122,7 @@ public class DataLoaderController {
 
         HashtagController hashtagController = HashtagController.getInstance();
         for (int i = 0; i < hashtagsTexts.length; i++) {
-            hashtags[i] = hashtagController.create(hashtagsTexts[i].toLowerCase());
+            hashtags[i] = hashtagController.create(hashtagsTexts[i].toUpperCase());
         }
         return hashtags;
     }
