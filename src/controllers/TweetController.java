@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Hashtag;
 import entities.Tweet;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
@@ -22,8 +23,8 @@ public class TweetController {
         return INSTANCE;
     }
 
-    public void create(long id, String content, byte month, short year, User user) {
-        Tweet tweet = new Tweet(id, content, month, year, user);
+    public void create(long id, String content, byte day, byte month, short year, User user, Hashtag[] hashtags) {
+        Tweet tweet = new Tweet(id, content, day, month, year, user, hashtags);
         tweets.add(tweet);
     }
 

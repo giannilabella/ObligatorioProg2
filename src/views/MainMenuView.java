@@ -1,12 +1,15 @@
 package views;
 
 import controllers.DriverController;
+import controllers.HashtagController;
 import controllers.UserController;
 import entities.MentionedDriver;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class MainMenuView {
@@ -64,10 +67,24 @@ public class MainMenuView {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Insert the month: ");
-        byte month = scanner.nextByte();
+        byte month;
+        try {
+            month = scanner.nextByte();
+        } catch (InputMismatchException ignored) {
+            System.out.println("Invalid month!");
+            waitForEnter();
+            return;
+        }
 
         System.out.print("Insert the year: ");
-        short year = scanner.nextShort();
+        short year;
+        try {
+            year = scanner.nextShort();
+        } catch (InputMismatchException ignored) {
+            System.out.println("Invalid year!");
+            waitForEnter();
+            return;
+        }
 
         System.out.println();
 
@@ -93,8 +110,23 @@ public class MainMenuView {
     private static void getNumberOfDifferentHashtags() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Insert the day: ");
-        byte day = scanner.nextByte();
+        System.out.print("Insert the date (yyyy-mm-dd): ");
+        String date;
+        try {
+           date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+        } catch (InputMismatchException ignored) {
+            System.out.println("Invalid date format!");
+            waitForEnter();
+            return;
+        }
+
+        byte day = Byte.parseByte(date.substring(8, 10));
+        byte month = Byte.parseByte(date.substring(5, 7));
+        short year = Short.parseShort(date.substring(0, 4));
+
+        HashtagController hashtagController = HashtagController.getInstance();
+        int numberOfDifferentHashtags = hashtagController.getNumberOfDifferentHashtagsInADay(day, month, year);
+        System.out.println("In the day " + date + ", " + numberOfDifferentHashtags + " different hashtags were used");
 
         waitForEnter();
     }

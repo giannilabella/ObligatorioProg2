@@ -127,10 +127,11 @@ public class DataLoaderController {
             System.out.println("Not loading tweet of id " + rawId + ", invalid date: " + rawDate);
             return;
         }
+        byte day = Byte.parseByte(rawDate.substring(8, 10));
         byte month = Byte.parseByte(rawDate.substring(5, 7));
         short year = Short.parseShort(rawDate.substring(0, 4));
 
         TweetController tweetController = TweetController.getInstance();
-        tweetController.create(id, rawContent, month, year, user, hashtags);
+        tweetController.create(id, rawContent, day, month, year, user, hashtags);
     }
 }
