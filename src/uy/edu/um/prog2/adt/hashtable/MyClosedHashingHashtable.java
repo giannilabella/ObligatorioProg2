@@ -2,6 +2,7 @@ package uy.edu.um.prog2.adt.hashtable;
 
 import uy.edu.um.prog2.adt.list.MyDoublyLinkedList;
 import uy.edu.um.prog2.adt.collection.MyCollection;
+import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 
 import java.util.Arrays;
 import java.lang.reflect.Array;
@@ -280,7 +281,7 @@ public class MyClosedHashingHashtable<KeyT, ValueT> implements MyHashtable<KeyT,
 
     @Override
     public MyCollection<ValueT> values() {
-        MyCollection<ValueT> values = new MyDoublyLinkedList<>();
+        MyCollection<ValueT> values = new MySinglyLinkedList<>();
         for (Entry entry : table) {
             if (entry != null && entry.active) {
                 values.add(entry.value);

@@ -54,6 +54,7 @@ public class MyMaxHeap<ElementT extends Comparable<ElementT>> implements MyHeap<
 
     @Override
     public void clear() {
+        Arrays.fill(elements, null);
         size = 0;
     }
 
