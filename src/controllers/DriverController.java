@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Driver;
+import entities.Hashtag;
 import entities.MentionedDriver;
 import entities.Tweet;
 import uy.edu.um.prog2.adt.collection.MyCollection;
@@ -61,6 +62,11 @@ public class DriverController {
                 for (Driver driver: drivers) {
                     if (driver.isMentioned(tweet.getContent())) {
                         mentionCount[driver.getId()]++;
+                    } else for (Hashtag hashtag: tweet.getHashtags()) {
+                        if (driver.isMentioned(hashtag.hashtagText())) {
+                            mentionCount[driver.getId()]++;
+                            break;
+                        }
                     }
                 }
             }
