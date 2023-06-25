@@ -1,9 +1,9 @@
 package controllers;
 
-import entities.Driver;
-import entities.Hashtag;
-import entities.MentionedDriver;
-import entities.Tweet;
+import models.Driver;
+import models.Hashtag;
+import models.MentionedDriver;
+import models.Tweet;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;

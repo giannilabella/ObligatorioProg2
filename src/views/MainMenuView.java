@@ -1,8 +1,8 @@
 package views;
 
-import entities.User;
-import entities.UsedHashtag;
-import entities.MentionedDriver;
+import models.User;
+import models.UsedHashtag;
+import models.MentionedDriver;
 import controllers.UserController;
 import controllers.TweetController;
 import controllers.DriverController;

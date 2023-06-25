@@ -1,7 +1,7 @@
 package controllers;
 
-import entities.Hashtag;
-import entities.User;
+import models.Hashtag;
+import models.User;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 

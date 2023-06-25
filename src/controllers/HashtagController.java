@@ -1,9 +1,9 @@
 package controllers;
 
-import entities.HashableString;
-import entities.Hashtag;
-import entities.Tweet;
-import entities.UsedHashtag;
+import models.HashableString;
+import models.Hashtag;
+import models.Tweet;
+import models.UsedHashtag;
 import uy.edu.um.prog2.adt.hashtable.MyHashtable;
 import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
 import uy.edu.um.prog2.adt.heap.MyHeap;

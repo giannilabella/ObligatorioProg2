@@ -1,8 +1,8 @@
 package controllers;
 
-import entities.Hashtag;
-import entities.Tweet;
-import entities.User;
+import models.Hashtag;
+import models.Tweet;
+import models.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.list.MyList;
 import uy.edu.um.prog2.adt.list.MySinglyLinkedList;

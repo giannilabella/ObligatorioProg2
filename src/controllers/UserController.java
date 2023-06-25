@@ -1,9 +1,9 @@
 package controllers;
 
-import entities.HashableString;
-import entities.Tweet;
-import entities.User;
-import entities.UserComparingMethods;
+import models.HashableString;
+import models.Tweet;
+import models.User;
+import models.UserComparingMethods;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;

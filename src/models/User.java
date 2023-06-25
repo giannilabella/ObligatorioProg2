@@ -1,4 +1,4 @@
-package entities;
+package models;
 
 public class User implements Comparable<User> {
     private final int id;
