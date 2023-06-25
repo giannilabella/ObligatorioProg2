@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -58,25 +59,30 @@ public class DataLoaderController {
         Iterator<CSVRecord> iterator = records.iterator();
         if (iterator.hasNext()) iterator.next();
 
-        for (CSVRecord record: records) {
-            String tweetId = record.get(0);
-            String userName = record.get(1);
-            String userLocation = record.get(2);
-            String userDescription = record.get(3);
-            String userCreationDate = record.get(4);
-            String userFollowersCount = record.get(5);
-            String userFriendsCount = record.get(6);
-            String userFavoritesCount = record.get(7);
-            String userIsVerified = record.get(8);
-            String tweetDate = record.get(9);
-            String tweetContent = record.get(10);
-            String tweetHashtags = record.get(11);
-            String tweetSource = record.get(12);
-            String tweetIsRetweeted = record.get(13);
+        try {
+            for (CSVRecord record : records) {
+                String tweetId = record.get(0);
+                String userName = record.get(1);
+                String userLocation = record.get(2);
+                String userDescription = record.get(3);
+                String userCreationDate = record.get(4);
+                String userFollowersCount = record.get(5);
+                String userFriendsCount = record.get(6);
+                String userFavoritesCount = record.get(7);
+                String userIsVerified = record.get(8);
+                String tweetDate = record.get(9);
+                String tweetContent = record.get(10);
+                String tweetHashtags = record.get(11);
+                String tweetSource = record.get(12);
+                String tweetIsRetweeted = record.get(13);
 
-            User user = loadUser(userName, userFavoritesCount, userIsVerified);
-            Hashtag[] hashtags = loadHashtags(tweetHashtags);
-            loadTweet(tweetId, tweetContent, tweetDate, user, hashtags);
+                User user = loadUser(userName, userFavoritesCount, userIsVerified);
+                Hashtag[] hashtags = loadHashtags(tweetHashtags);
+                loadTweet(tweetId, tweetContent, tweetDate, user, hashtags);
+            }
+        } catch (UncheckedIOException exception) {
+            System.out.println("Error reading dataset records!");
+            exception.printStackTrace();
         }
 
         try {
