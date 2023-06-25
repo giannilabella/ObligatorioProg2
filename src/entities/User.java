@@ -3,7 +3,7 @@ package entities;
 public class User implements Comparable<User> {
     private final int id;
     private final String name;
-    private final int favoritesCount;
+    private int favoritesCount;
     private final boolean isVerified;
     private int tweetsCount;
     private UserComparingMethods comparingMethod;
@@ -22,6 +22,10 @@ public class User implements Comparable<User> {
 
     public long getFavoritesCount() {
         return favoritesCount;
+    }
+
+    public void setFavoritesCount(int favoritesCount) {
+        this.favoritesCount = favoritesCount;
     }
 
     public boolean isVerified() {

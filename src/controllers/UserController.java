@@ -30,8 +30,13 @@ public class UserController {
 
     public User create(String name, int favoritesCount, boolean isVerified) {
         HashableString hashableName = new HashableString(name);
-        if (users.containsKey(hashableName)) return users.get(hashableName);
-
+        if (users.containsKey(hashableName)) {
+            User user = users.get(hashableName);
+            if (favoritesCount > user.getFavoritesCount()) {
+                user.setFavoritesCount(favoritesCount);
+            }
+            return user;
+        }
         User user = new User(users.size(), name, favoritesCount, isVerified);
         users.put(hashableName, user);
         return user;
@@ -63,6 +68,7 @@ public class UserController {
             if (user == null) break;
             mostActiveUsers.add(user);
         }
+        mostActiveUsersHeap.clear();
         return mostActiveUsers;
     }
 
