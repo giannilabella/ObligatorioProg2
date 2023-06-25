@@ -4,17 +4,20 @@ import controllers.DriverController;
 import controllers.HashtagController;
 import controllers.UserController;
 import entities.MentionedDriver;
+import entities.UsedHashtag;
 import entities.User;
 import uy.edu.um.prog2.adt.collection.MyCollection;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class MainMenuView {
     public static void main(String[] args) {
         LoadDataView.loadData();
 
+        Scanner scanner = new Scanner(System.in);
         int selection = -1;
         while (selection != 0) {
             System.out.println("====== Choose the one of the following reports ======");
@@ -29,16 +32,20 @@ public class MainMenuView {
             System.out.println("-----------------------------------------------------");
             System.out.print("Enter the selected option: ");
 
-            Scanner scanner = new Scanner(System.in);
-            selection = scanner.nextInt();
+
+            try {
+                selection = scanner.nextInt();
+            } catch (NoSuchElementException ignored) {
+                selection = -1;
+            }
             switch (selection) {
                 case 1 -> {
                     System.out.println("========== Listing most mentioned drivers! ==========\n");
-                    getMostMentionedDrivers(10);
+                    getMostMentionedDrivers();
                 }
                 case 2 -> {
                     System.out.println("========== Listing users with more tweets! ==========\n");
-                    getMostActiveUsers(15);
+                    getMostActiveUsers();
                 }
                 case 3 -> {
                     System.out.println("======= Getting number of different hashtags! =======\n");
@@ -50,7 +57,7 @@ public class MainMenuView {
                 }
                 case 5 -> {
                     System.out.println("=========== Listing most favorited users! ===========\n");
-                    getMostFavoritedUsers(7);
+                    getMostFavoritedUsers();
                 }
                 case 6 -> {
                     System.out.println("============= Getting number of tweets! =============\n");
@@ -62,7 +69,7 @@ public class MainMenuView {
         } 
     }
 
-    private static void getMostMentionedDrivers(int numberOfDrivers) {
+    private static void getMostMentionedDrivers() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Insert the month: ");
@@ -88,7 +95,7 @@ public class MainMenuView {
         System.out.println();
 
         DriverController driverController = DriverController.getInstance();
-        MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear(month, year, numberOfDrivers);
+        MyCollection<MentionedDriver> mostMentionedDrivers = driverController.getMostMentionedDriversByMonthAndYear(month, year, 10);
         for (MentionedDriver driver: mostMentionedDrivers) {
             System.out.println("Driver " + driver.getFullName() + " is mentioned " + driver.mentionsCount() + " times");
         }
@@ -96,9 +103,9 @@ public class MainMenuView {
         waitForEnter();
     }
     
-    private static void getMostActiveUsers(int numberOfUsers) {
+    private static void getMostActiveUsers() {
         UserController userController = UserController.getInstance();
-        MyCollection<User> mostActiveUsers = userController.getMostActiveUsers(numberOfUsers);
+        MyCollection<User> mostActiveUsers = userController.getMostActiveUsers(15);
         for (User user: mostActiveUsers) {
             System.out.println("User \"" + user.getName() + "\" has tweeted " + user.getTweetsCount() + " times and " + (user.isVerified() ? "is verified" : "is not verified"));
         }
@@ -121,6 +128,8 @@ public class MainMenuView {
         byte day = Byte.parseByte(date.substring(8, 10));
         byte month = Byte.parseByte(date.substring(5, 7));
         short year = Short.parseShort(date.substring(0, 4));
+
+        System.out.println();
 
         HashtagController hashtagController = HashtagController.getInstance();
         int numberOfDifferentHashtags = hashtagController.getNumberOfDifferentHashtagsInADay(day, month, year);
@@ -145,14 +154,22 @@ public class MainMenuView {
         byte month = Byte.parseByte(date.substring(5, 7));
         short year = Short.parseShort(date.substring(0, 4));
 
-        // TODO: list most used hashtags
+        System.out.println();
+
+        HashtagController hashtagController = HashtagController.getInstance();
+        UsedHashtag mostUsedHashtag = hashtagController.getMostUsedHashtagInTheDay(day, month, year);
+        if (mostUsedHashtag != null) {
+            System.out.println("In the day " + date + ", the most used hashtag is #" + mostUsedHashtag.getHashtagText() + " with " + mostUsedHashtag.getUsesCount() + " uses");
+        } else {
+            System.out.println("In the day " + date + ", no hashtags were used");
+        }
 
         waitForEnter();
     }
     
-    private static void getMostFavoritedUsers(int numberOfUsers) {
+    private static void getMostFavoritedUsers() {
         UserController userController = UserController.getInstance();
-        MyCollection<User> mostFavoritedUsers = userController.getMostFavoritedUsers(numberOfUsers);
+        MyCollection<User> mostFavoritedUsers = userController.getMostFavoritedUsers(7);
         for (User user: mostFavoritedUsers) {
             System.out.println("User \"" + user.getName() + "\" has " + user.getFavoritesCount() + " favorites");
         }
@@ -171,7 +188,7 @@ public class MainMenuView {
     private static void waitForEnter() {
         System.out.println("\nPress enter to go back to the menu");
         try {
-            System.in.read();
+            int ignored = System.in.read();
         } catch (IOException ignored) {}
     }
 }

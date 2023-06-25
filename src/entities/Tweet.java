@@ -3,7 +3,7 @@ package entities;
 import java.util.Objects;
 
 public class Tweet {
-    private final long id;
+    private final int id;
     private final String content;
     private final byte day;
     private final byte month;
@@ -11,7 +11,7 @@ public class Tweet {
     private final User user;
     private final Hashtag[] hashtags;
 
-    public Tweet(long id, String content, byte day, byte month, short year, User user, Hashtag[] hashtags) {
+    public Tweet(int id, String content, byte day, byte month, short year, User user, Hashtag[] hashtags) {
         this.id = id;
         this.content = content;
         this.day = day;
@@ -19,10 +19,6 @@ public class Tweet {
         this.year = year;
         this.user = user;
         this.hashtags = hashtags;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getContent() {

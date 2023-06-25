@@ -30,22 +30,17 @@ public class DriverController {
     }
 
     public void create(String fullName) {
-        int id = drivers.size();
+        String[] splitFullName = fullName.trim().split(" +", 2);
+        String name = splitFullName[0];
+        String surname = splitFullName[1];
+        String[] splitSurname = surname.split(" +");
 
-        fullName = fullName.trim();
-        String[] splitName = fullName.split(" ", 2);
-        String name = splitName[0];
-        String surname = splitName[1];
-
-        String regex = name + "|" + String.join(" *", surname.split(" "));
+        fullName = name + " " + String.join(" ", splitSurname);
+        String regex = name + "|" + String.join(" *", splitSurname);
         Pattern driverPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 
-        Driver driver = new Driver(id, name, surname, fullName, driverPattern);
+        Driver driver = new Driver(drivers.size(), fullName, driverPattern);
         drivers.add(driver);
-    }
-
-    public MyCollection<Driver> getDrivers() {
-        return drivers;
     }
 
     public int getDriversCount() {
@@ -53,18 +48,18 @@ public class DriverController {
     }
 
     public MyCollection<MentionedDriver> getMostMentionedDriversByMonthAndYear(byte month, short year, int numberOfDrivers) {
-        int[] mentionCount = new int[drivers.size()];
-        Arrays.fill(mentionCount, 0);
+        int[] mentionsCount = new int[drivers.size()];
+        Arrays.fill(mentionsCount, 0);
 
         TweetController tweetController = TweetController.getInstance();
         for (Tweet tweet: tweetController.getTweets()) {
             if (tweet.getMonth() == month && tweet.getYear() == year) {
                 for (Driver driver: drivers) {
                     if (driver.isMentioned(tweet.getContent())) {
-                        mentionCount[driver.getId()]++;
+                        mentionsCount[driver.getId()]++;
                     } else for (Hashtag hashtag: tweet.getHashtags()) {
                         if (driver.isMentioned(hashtag.hashtagText())) {
-                            mentionCount[driver.getId()]++;
+                            mentionsCount[driver.getId()]++;
                             break;
                         }
                     }
@@ -74,7 +69,7 @@ public class DriverController {
 
         MyHeap<MentionedDriver> mentionedDriverHeap = new MyMaxHeap<>(drivers.size());
         for (Driver driver: drivers) {
-            mentionedDriverHeap.add(new MentionedDriver(driver, mentionCount[driver.getId()]));
+            mentionedDriverHeap.add(new MentionedDriver(driver, mentionsCount[driver.getId()]));
         }
 
         MyList<MentionedDriver> mentionedDrivers = new MySinglyLinkedList<>();

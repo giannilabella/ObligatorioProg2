@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class DataLoaderController {
     private static final Pattern driverNamePattern = Pattern.compile("\\S+ .+");
-    private static final Pattern hashtagListPattern = Pattern.compile("|\\[('\\S+')+(, *'\\S+')*]");
+    private static final Pattern hashtagListPattern = Pattern.compile("\\[('[^\\s']+')+(, *'[^\\s']+')*]");
     private static final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}");
 
     public static void loadDrivers(Path filePath) {
@@ -102,15 +102,16 @@ public class DataLoaderController {
     }
 
     private static Hashtag[] loadHashtags(String rawHashtags) {
+        boolean noHashtags = rawHashtags.equals("");
         boolean validHashtagList = hashtagListPattern.matcher(rawHashtags).matches();
-        if (!validHashtagList) {
+        if (!validHashtagList && !noHashtags) {
             System.out.println("Not loading invalid hashtags: " + rawHashtags);
             return new Hashtag[0];
         }
 
-        if (rawHashtags.equals("")) return new Hashtag[0];
+        if (noHashtags) return new Hashtag[0];
 
-        String[] hashtagsTexts = rawHashtags.substring(2, rawHashtags.length() - 3).split(", *");
+        String[] hashtagsTexts = rawHashtags.substring(2, rawHashtags.length() - 2).split("', *'");
         Hashtag[] hashtags = new Hashtag[hashtagsTexts.length];
 
         HashtagController hashtagController = HashtagController.getInstance();
@@ -121,9 +122,9 @@ public class DataLoaderController {
     }
 
     private static void loadTweet(String rawId, String rawContent, String rawDate, User user, Hashtag[] hashtags) {
-        long id;
+        int id;
         try {
-            id = Long.parseLong(rawId);
+            id = Integer.parseInt(rawId);
         } catch (NumberFormatException exception) {
             System.out.println("Not loading tweet with invalid id: " + rawId);
             return;

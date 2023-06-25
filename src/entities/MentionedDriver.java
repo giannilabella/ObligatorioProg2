@@ -3,18 +3,6 @@ package entities;
 import java.util.Objects;
 
 public record MentionedDriver(Driver driver, int mentionsCount) implements Comparable<MentionedDriver> {
-    public int getId() {
-        return driver.getId();
-    }
-
-    public String getName() {
-        return driver.getName();
-    }
-
-    public String getSurname() {
-        return driver.getSurname();
-    }
-
     public String getFullName() {
         return driver.getFullName();
     }

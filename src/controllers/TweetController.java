@@ -23,7 +23,7 @@ public class TweetController {
         return INSTANCE;
     }
 
-    public void create(long id, String content, byte day, byte month, short year, User user, Hashtag[] hashtags) {
+    public void create(int id, String content, byte day, byte month, short year, User user, Hashtag[] hashtags) {
         Tweet tweet = new Tweet(id, content, day, month, year, user, hashtags);
         tweets.add(tweet);
     }

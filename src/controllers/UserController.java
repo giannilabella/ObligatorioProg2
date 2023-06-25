@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.HashableString;
 import entities.Tweet;
 import entities.User;
 import entities.UserComparingMethods;
@@ -11,7 +12,7 @@ import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
 
 public class UserController {
     private static UserController INSTANCE;
-    private final MyHashtable<String, User> users;
+    private final MyHashtable<HashableString, User> users;
     private boolean areUserTweetsCounted;
 
     private UserController() {
@@ -28,15 +29,12 @@ public class UserController {
     }
 
     public User create(String name, int favoritesCount, boolean isVerified) {
-        if (users.containsKey(name)) return users.get(name);
+        HashableString hashableName = new HashableString(name);
+        if (users.containsKey(hashableName)) return users.get(hashableName);
 
         User user = new User(users.size(), name, favoritesCount, isVerified);
-        users.put(name, user);
+        users.put(hashableName, user);
         return user;
-    }
-
-    public MyCollection<User> getUsers() {
-        return users.values();
     }
 
     public int getUsersCount() {

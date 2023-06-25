@@ -5,29 +5,17 @@ import java.util.regex.Pattern;
 
 public class Driver {
     private final int id;
-    private final String name;
-    private final String surname;
     private final String fullName;
     private final Pattern driverPattern;
 
-    public Driver(int id, String name, String surname, String fullName, Pattern driverPattern) {
+    public Driver(int id, String fullName, Pattern driverPattern) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
         this.fullName = fullName;
         this.driverPattern = driverPattern;
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
     }
 
     public String getFullName() {

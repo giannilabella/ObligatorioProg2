@@ -1,9 +1,6 @@
 package views;
 
-import controllers.DataLoaderController;
-import controllers.DriverController;
-import controllers.TweetController;
-import controllers.UserController;
+import controllers.*;
 
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -62,6 +59,9 @@ public class LoadDataView {
 
         UserController userController = UserController.getInstance();
         System.out.println("Loaded " + userController.getUsersCount() + " users!");
+
+        HashtagController hashtagController = HashtagController.getInstance();
+        System.out.println("Loaded " + hashtagController.getHashtagsCount() + " hashtags!");
 
         TweetController tweetController = TweetController.getInstance();
         System.out.println("Loaded " + tweetController.getTweetCount() + " tweets!\n");
