@@ -6,7 +6,7 @@ public class User implements Comparable<User> {
     private int favoritesCount;
     private final boolean isVerified;
     private int tweetsCount;
-    private UserComparingMethods comparingMethod;
+    private static UserComparingMethods comparingMethod;
 
     public User(int id, String name, int favoritesCount, boolean isVerified) {
         this.id = id;
@@ -40,8 +40,8 @@ public class User implements Comparable<User> {
         tweetsCount++;
     }
 
-    public void setComparingMethod(UserComparingMethods comparingMethod) {
-        this.comparingMethod = comparingMethod;
+    public static void setComparingMethod(UserComparingMethods comparingMethod) {
+        User.comparingMethod = comparingMethod;
     }
 
     @Override

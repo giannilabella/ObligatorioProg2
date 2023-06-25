@@ -55,6 +55,7 @@ public class UserController {
             }
             areUserTweetsCounted = true;
         }
+        User.setComparingMethod(UserComparingMethods.TWEETS_COUNT);
         MyHeap<User> mostActiveUsersHeap = new MyMaxHeap<>();
         users.addValuesTo(mostActiveUsersHeap);
 
@@ -69,14 +70,11 @@ public class UserController {
     }
 
     public MyCollection<User> getMostFavoritedUsers(int numberOfUsers) {
+        User.setComparingMethod(UserComparingMethods.FAVORITES_COUNT);
         MyHeap<User> mostFavoritedUsersHeap = new MyMaxHeap<>();
-        MyCollection<User> mostFavoritedUsers = users.values();
-        for (User user: mostFavoritedUsers) {
-            user.setComparingMethod(UserComparingMethods.FAVORITES_COUNT);
-            mostFavoritedUsersHeap.add(user);
-        }
+        users.addValuesTo(mostFavoritedUsersHeap);
 
-        mostFavoritedUsers.clear();
+        MyCollection<User> mostFavoritedUsers = new MySinglyLinkedList<>();
         for (int i = 0; i < numberOfUsers; i++) {
             User user = mostFavoritedUsersHeap.remove();
             if (user == null) break;
