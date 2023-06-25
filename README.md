@@ -47,7 +47,7 @@ Month 8 and year 2021 were used.
 
 ### Third Report (Number of different hashtags)
 Day 2021-08-01 was used.
-#### Average time: x ms
+#### Average time: 23 ms
 #### Resources usage after first execution
 ![resources usage first execution](docs/report_3_first_execution.png)
 #### Resources usage after 10 executions
@@ -57,7 +57,7 @@ Day 2021-08-01 was used.
 
 ### Fourth Report (Most used hashtag)
 Day 2021-08-01 was used.
-#### Average time: x ms
+#### Average time: 33 ms
 #### Resources usage after first execution
 ![resources usage first execution](docs/report_4_first_execution.png)
 #### Resources usage after 10 executions
@@ -66,7 +66,7 @@ Day 2021-08-01 was used.
 ![resources usage gc](docs/report_4_gc.png)
 
 ### Fifth Report (Most favorited users)
-#### Average time: x ms
+#### Average time: 1800 ms
 #### Resources usage after first execution
 ![resources usage first execution](docs/report_5_first_execution.png)
 #### Resources usage after 10 executions
@@ -74,8 +74,9 @@ Day 2021-08-01 was used.
 #### Resources usage after GC
 ![resources usage gc](docs/report_5_gc.png)
 
-### Sixth Report (Most favorited users)
-#### Average time: x ms
+### Sixth Report (Number of tweets with a specific word or phrase)
+String F1 was used (case-insensitive mode).
+#### Average time: 308 ms
 #### Resources usage after first execution
 ![resources usage first execution](docs/report_6_first_execution.png)
 #### Resources usage after 10 executions
