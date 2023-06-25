@@ -34,4 +34,6 @@ public interface MyHashtable<KeyT, ValueT> {
     int size();
 
     MyCollection<ValueT> values();
+
+    void addValuesTo(MyCollection<ValueT> collection);
 }

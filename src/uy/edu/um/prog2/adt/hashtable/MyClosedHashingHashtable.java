@@ -290,6 +290,15 @@ public class MyClosedHashingHashtable<KeyT, ValueT> implements MyHashtable<KeyT,
         return values;
     }
 
+    @Override
+    public void addValuesTo(MyCollection<ValueT> collection) {
+        for (Entry entry : table) {
+            if (entry != null && entry.active) {
+                collection.add(entry.value);
+            }
+        }
+    }
+
     private class Entry {
         public final KeyT key;
         public ValueT value;

@@ -4,13 +4,14 @@ import entities.HashableString;
 import entities.Hashtag;
 import entities.Tweet;
 import entities.UsedHashtag;
-import uy.edu.um.prog2.adt.collection.MyCollection;
 import uy.edu.um.prog2.adt.hashtable.MyHashtable;
 import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
+import uy.edu.um.prog2.adt.heap.MyHeap;
+import uy.edu.um.prog2.adt.heap.MyMaxHeap;
 
 public class HashtagController {
     private static HashtagController INSTANCE;
-    private final MyClosedHashingHashtable<HashableString, Hashtag> hashtags;
+    private final MyHashtable<HashableString, Hashtag> hashtags;
 
     private HashtagController() {
         this.hashtags = new MyClosedHashingHashtable<>(65000, 0.85f);
@@ -76,16 +77,8 @@ public class HashtagController {
             }
         }
 
-        MyCollection<UsedHashtag> usedHashtagsList = usedHashtags.values();
-        UsedHashtag mostUsedHashtags = null;
-        for (UsedHashtag usedHashtag: usedHashtagsList) {
-            if (
-                    (usedHashtag != null && mostUsedHashtags == null) ||
-                    (usedHashtag != null && usedHashtag.compareTo(mostUsedHashtags) > 0)
-            ) {
-                mostUsedHashtags = usedHashtag;
-            }
-        }
-        return mostUsedHashtags;
+        MyHeap<UsedHashtag> usedHashtagMaxHeap = new MyMaxHeap<>();
+        usedHashtags.addValuesTo(usedHashtagMaxHeap);
+        return usedHashtagMaxHeap.peek();
     }
 }

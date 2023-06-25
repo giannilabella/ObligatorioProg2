@@ -9,6 +9,7 @@ import uy.edu.um.prog2.adt.heap.MyHeap;
 import uy.edu.um.prog2.adt.heap.MyMaxHeap;
 import uy.edu.um.prog2.adt.hashtable.MyHashtable;
 import uy.edu.um.prog2.adt.hashtable.MyClosedHashingHashtable;
+import uy.edu.um.prog2.adt.list.MySinglyLinkedList;
 
 public class UserController {
     private static UserController INSTANCE;
@@ -54,15 +55,10 @@ public class UserController {
             }
             areUserTweetsCounted = true;
         }
-        MyCollection<User> mostActiveUsers = users.values();
-
         MyHeap<User> mostActiveUsersHeap = new MyMaxHeap<>();
-        for (User user: mostActiveUsers) {
-            user.setComparingMethod(UserComparingMethods.TWEETS_COUNT);
-            mostActiveUsersHeap.add(user);
-        }
+        users.addValuesTo(mostActiveUsersHeap);
 
-        mostActiveUsers.clear();
+        MyCollection<User> mostActiveUsers = new MySinglyLinkedList<>();
         for (int i = 0; i < numberOfUsers; i++) {
             User user = mostActiveUsersHeap.remove();
             if (user == null) break;
