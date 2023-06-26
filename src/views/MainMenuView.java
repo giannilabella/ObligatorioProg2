@@ -14,8 +14,11 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class MainMenuView {
+    private static final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+
     public static void main(String[] args) {
         LoadDataView.loadData();
 
@@ -79,7 +82,7 @@ public class MainMenuView {
         try {
             month = scanner.nextByte();
         } catch (InputMismatchException ignored) {
-            System.out.println("Invalid month!");
+            System.out.println("\nInvalid month!");
             waitForEnter();
             return;
         }
@@ -89,7 +92,7 @@ public class MainMenuView {
         try {
             year = scanner.nextShort();
         } catch (InputMismatchException ignored) {
-            System.out.println("Invalid year!");
+            System.out.println("\nInvalid year!");
             waitForEnter();
             return;
         }
@@ -126,13 +129,19 @@ public class MainMenuView {
     }
     
     private static void getNumberOfDifferentHashtags() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Insert the date (yyyy-mm-dd): ");
         String date;
         try {
-            Scanner scanner = new Scanner(System.in);
-            date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
-        } catch (InputMismatchException ignored) {
-            System.out.println("Invalid date format!");
+            date = scanner.next();
+        } catch (NoSuchElementException ignored) {
+            System.out.println("\nEmpty date!");
+            waitForEnter();
+            return;
+        }
+
+        if (!datePattern.matcher(date).matches()) {
+            System.out.println("\nInvalid date format!");
             waitForEnter();
             return;
         }
@@ -156,13 +165,19 @@ public class MainMenuView {
     }
     
     private static void getMostUsedHashtag() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Insert the date (yyyy-mm-dd): ");
         String date;
         try {
-            Scanner scanner = new Scanner(System.in);
-            date = scanner.next("[0-9]{4}-[0-9]{2}-[0-9]{2}");
-        } catch (InputMismatchException ignored) {
-            System.out.println("Invalid date format!");
+            date = scanner.next();
+        } catch (NoSuchElementException ignored) {
+            System.out.println("\nEmpty date!");
+            waitForEnter();
+            return;
+        }
+
+        if (!datePattern.matcher(date).matches()) {
+            System.out.println("\nInvalid date format!");
             waitForEnter();
             return;
         }
@@ -212,7 +227,7 @@ public class MainMenuView {
         try {
             searchString = scanner.next();
         } catch (NoSuchElementException ignored) {
-            System.out.println("Empty string!");
+            System.out.println("\nEmpty string!");
             waitForEnter();
             return;
         }
@@ -223,7 +238,7 @@ public class MainMenuView {
             String selectionString = scanner.next();
             caseSensitive = selectionString.equals("y");
         } catch (NoSuchElementException ignored) {
-            System.out.println("Empty string!");
+            System.out.println("\nEmpty string!");
             waitForEnter();
             return;
         }
